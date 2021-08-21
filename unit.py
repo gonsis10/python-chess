@@ -1,13 +1,9 @@
 from abc import ABC, abstractmethod
 
-class Unit(ABC):
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-    
-    def __repr__(self):
-        return -1
+class Unit(ABC):    
+    def __str__(self):
+        return str(-1)
 
-    @abstractmethod
-    def move(self, board, move, opponent):
-        pass
+    # @abstractmethod
+    # def move(self, board, move, opponent):
+    #     pass

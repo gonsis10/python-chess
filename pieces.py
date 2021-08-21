@@ -4,24 +4,22 @@ class Pawn(Unit):
     def __init__(self):
         super().__init__(None, None)
 
-    def __repr__(self):
-        return -1
+class Bishop(Unit):
+    def __init__(self):
+        super().__init__(None, None)
 
-    def move(self, board, move, opponent):
-        x = move[0]
+class Knight(Unit):
+    def __init__(self):
+        super().__init__(None, None)
 
-# class Bishop(Piece):
-#     def __init__(self):
+class Rook(Unit):
+    def __init__(self):
+        super().__init__(None, None)
 
+class Queen(Unit):
+    def __init__(self):
+        super().__init__(None, None)
 
-# class Knight(Piece):
-#     def __init__(self):
-
-# class Rook(Piece):
-#     def __init__(self):
-
-# class Queen(Piece):
-#     def __init__(self):
-
-# class King(Piece):
-#     def __init__(self):
+class King(Unit):
+    def __init__(self):
+        super().__init__(None, None)

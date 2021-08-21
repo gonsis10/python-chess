@@ -1,9 +1,5 @@
-from pieces import Piece
+from pieces import *
 
 class Player:
-    def select():
-        coord = input().split(", ")
-        return Piece(coord[0], coord[1])
-    def move():
-        coord = input().split(", ")
-        return Piece(coord[0], coord[1])
+    def __init__(self):
+        pass
