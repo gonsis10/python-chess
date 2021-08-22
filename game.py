@@ -3,11 +3,11 @@ from player import Player
 from pieces import *
 
 class Game:
+    players = [Player("white"), Player("black")]
+    board = Board(players)
+
     def __init__(self):
-        self.board = Board()
-        self.first_player = Player()
-        self.second_player = Player()
-        self.players = [self.first_player, self.second_player]
+        self.start()
 
     def start(self):
         print(self.board)
