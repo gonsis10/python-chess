@@ -1,8 +1,5 @@
-from abc import ABC, abstractmethod
-
-class Unit(ABC):
-    @abstractmethod
-    def __init__(self, player):
+class Unit():
+    def __init__(self):
         pass
 
     def __str__(self):

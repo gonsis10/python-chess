@@ -1,40 +1,30 @@
-from player import Player
-import numpy as np
-
 from unit import Unit
 from pieces import *
 
+
 class Board:
+    COLUMN = 8
+    ROW = 8
+
     def __init__(self, players):
         self.players = players
-        self.setup(players)
-    
-    def setup(self):
-        self.board = []
-        for n in range(8):
-            if (n == 0 or n == 7):
-                for p in self.players:
-                    if (n == 0 and p.color == "white"):
-                        for pp in p.pieces:
-                            
-                    else:
-                
-                self.board.append()
-            elif (n == 1 or n == 6):
-                self.board.append([Pawn()] * 8)
-            else:
-                self.board.append([Unit()] * 8)
-        self.board = np.array(self.board)
+        frame = [[Unit() for row in range(self.ROW)]
+                 for column in range(self.COLUMN)]
+        self.board = self.__setup(frame, players)
 
-    def __str__(self):
-        string = ""
-        row = 0
-        for c in range(len(self.board)):
-            string += f"{c + 1} "
-            for r in range(len(self.board[c])):
-                string += f"{self.board[c][r]} "
-            string += "\n"
-        string += "  a b c d e f g h"
+    def __str__(self) -> str:
+        board = [[f"{unit} " for unit in row] and "\n" for row in self.board]
+        return board
 
-        return string
+    def __setup(self, board, players) -> list:
+        def return_back_row(pieces) -> list:
+            back_row = []
+            order = {0: Rook, 1: Knight, 2: Bishop, 3: Queen,
+                     4: King, 5: Bishop, 6: Knight, 7: Rook}
+            for index in range(len(pieces)):
+                if pieces[index] != order.get(index):
+                    back_row.append(pieces.pop(order.get(index)))
+            return pieces
 
+        board[0] = return_back_row(players[0].pieces)
+        return board

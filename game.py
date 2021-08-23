@@ -2,6 +2,7 @@ from board import Board
 from player import Player
 from pieces import *
 
+
 class Game:
     players = [Player("white"), Player("black")]
     board = Board(players)
