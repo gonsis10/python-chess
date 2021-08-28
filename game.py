@@ -7,8 +7,12 @@ class Game:
     players = [Player("white"), Player("black")]
     board = Board(players)
 
-    def __init__(self):
-        self.start()
-
     def start(self):
+        for player in players:
+
         print(self.board)
+
+
+if __name__ == "__main__":
+    game = Game()
+    game.start()
