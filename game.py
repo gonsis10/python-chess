@@ -8,9 +8,7 @@ class Game:
     board = Board(players)
 
     def start(self):
-        for player in players:
-
-        print(self.board)
+        print(self.board.display())
 
 
 if __name__ == "__main__":

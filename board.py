@@ -1,3 +1,4 @@
+import numpy as np
 from unit import Unit
 from pieces import *
 
@@ -7,15 +8,17 @@ class Board:
     ROW = 8
 
     def __init__(self, players):
-        self.grid = self.__setup(players)
+        self.board = np.array(self.__setup(players))
 
-    def __str__(self):
+    def display(self, board=None):
+        if board == None:
+            board = self.board
         string = ""
-        for row in range(len(self.grid)):
+        for row in range(len(board)):
             string += f"{row + 1} "
-            for column in range(len(self.grid[row])):
-                string += "_ " if str(self.grid[row][column]
-                                      ) == "-1" else f"{self.grid[row][column]} "
+            for column in range(len(board[row])):
+                string += "_ " if str(board[row][column]
+                                      ) == "-1" else f"{board[row][column]} "
             string += "\n"
         string += "  a b c d e f g h"
         return string
@@ -44,10 +47,30 @@ class Board:
                    "e": 4, "f": 5, "g": 6, "h": 7}
         y_order = {1: 7, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1, 8: 0}
 
-        column = x_order.get(x)
-        row = y_order.get(y)
+        try:
+            column = x_order.get(x)
+            row = y_order.get(y)
+            return True, self.board[row][column]
+        except:
+            return False
 
-        return self.grid[row][column]
+    def select_piece(self, piece):
+        copy = self.board
+        [row, column] = np.where(self.board == piece)
+        row = int(row)
+        column = int(column)
+
+        def pawn():
+            column = 0
+            while:
+                try:
+            except:
+                break
+
+        paths = {Pawn: pawn, Rook: rook, Knight: knight,
+                 Bishop: bishop, Queen: queen, King: king}
+
+        return paths.get(piece)()
 
     def remove_piece(self, piece):
-        self.grid.remove(piece)
+        self.board.remove(piece)
