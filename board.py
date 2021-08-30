@@ -62,15 +62,11 @@ class Board:
 
         def pawn():
             column = 0
-            while:
-                try:
-            except:
-                break
 
         paths = {Pawn: pawn, Rook: rook, Knight: knight,
                  Bishop: bishop, Queen: queen, King: king}
 
         return paths.get(piece)()
 
-    def remove_piece(self, piece):
+    def move_piece(self, piece):
         self.board.remove(piece)
