@@ -1,4 +1,5 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
+import numpy as numpy
 
 
 class Unit():
@@ -13,6 +14,11 @@ class Unit():
         pass
 
     @property
-    @abstractmethod
     def moved(self):
         pass
+
+    def location(self, object, board):
+        [row, column] = numpy.where(board == object)
+        row = int(row)
+        column = int(column)
+        return row, column

@@ -6,30 +6,26 @@ class Pawn(Unit):
     moved = False
 
     def __init__(self, player):
-        super.__init__(player)
+        super().__init__(player)
 
     def __str__(self):
         return str(0)
 
     def path(self, board):
-        [row, column] = numpy.where(board == self)
-        row = int(row)
-        column = int(column)
+        [row, column] = super().location(self, board)
 
         positions = []
-        try:
-            position = None
-            if not self.moved:
-                position = board[row - 2 if self.player.color ==
-                                 "white" else row + 2][column]
-            else:
-                position = board[row - 1 if self.player.color ==
-                                 "white" else row + 1][column]
-
-            if isinstance(position, Unit):
-                positions.append(position)
-        except:
-            pass
+        for _ in range(2):
+            try:
+                amount = 2 if not self.moved else 1
+                position = board[row - amount if self.player.color == "white" else row + amount][column]
+                
+                if isinstance(position, Unit):
+                    positions.append(position)
+                    if not self.moved:
+                        self.moved = True
+            except:
+                pass
 
         return positions
 
