@@ -13,17 +13,32 @@ class Pawn(Unit):
 
     def path(self, board):
         [row, column] = super().location(self, board)
+        direction = "row - " if self.player.color == "white" else "row + "
 
         positions = []
-        for _ in range(2):
+        try:
+            position = board[eval(direction + 1)][column]
+            if isinstance(position, Unit):
+                positions.append(position)
+                if not self.moved:
+                    try:
+                        position = board[eval(direction + 2)][column]
+                        if isinstance(position, Unit):
+                            positions.append(position)
+                    except:
+                        pass
+        finally:
             try:
-                amount = 2 if not self.moved else 1
-                position = board[row - amount if self.player.color == "white" else row + amount][column]
-                
-                if isinstance(position, Unit):
+                position = board[eval(direction + 1)][column - 1]
+                if not isinstance(position, Unit):
                     positions.append(position)
-                    if not self.moved:
-                        self.moved = True
+            except:
+                pass
+
+            try:
+                position = board[eval(direction + 1)][column + 1]
+                if not isinstance(position, Unit):
+                    positions.append(position)
             except:
                 pass
 

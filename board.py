@@ -10,16 +10,20 @@ class Board:
     def __init__(self, players):
         self.board = numpy.array(self.__setup(players))
 
-    def display(self, piece, piece_paths=None):
+    def display(self, piece_paths=None):
         string = ""
         for row in range(len(self.board)):
             string += f"{row + 1} "
             for column in range(len(self.board[row])):
+                unit = self.board[row][column]
                 if piece_paths != None and [row, column] in piece_paths:
-                    string += "O "
+                    if not isinstance(unit, Unit):
+                        string += "X "
+                    else:
+                        string += "O "
                 else:
-                    string += "_ " if str(self.board[row][column]
-                                          ) == "-1" else f"{self.board[row][column]} "
+                    string += "_ " if str(unit
+                                          ) == "-1" else f"{unit} "
             string += "\n"
         string += "  a b c d e f g h"
         return string
@@ -43,16 +47,19 @@ class Board:
 
         return frame
 
-    def piece(self, x, y):
+    def piece(self, response, player):
         x_order = {"a": 0, "b": 1, "c": 2, "d": 3,
                    "e": 4, "f": 5, "g": 6, "h": 7}
         y_order = {1: 7, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1, 8: 0}
+        [x, y] = list(response)
 
         try:
             column = x_order.get(x)
             row = y_order.get(y)
-            return True, self.board[row][column]
-        except:
+            piece = self.board[row][column]
+            if piece.player.color == player.color:
+                return True, piece
+        finally:
             return False
 
     # def piece_paths(self, piece):

@@ -27,14 +27,15 @@ class Game:
         return
 
     def position_selection(self, piece, player):
-        piece_paths = self.board.piece_paths(piece)
+        piece_paths = piece.paths(self.board)
         print(f"{self.board.display(piece_paths)}\nSelect position.")
         response = input()
         if response.lower() == "b":
             self.piece_selection(player)
             return
-
-        [valid, position] = self.board.piece(input(), )
+        [valid, position] = self.board.piece(response)
+        if valid:
+            
 
 
 if __name__ == "__main__":
