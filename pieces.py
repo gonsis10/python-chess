@@ -13,7 +13,7 @@ class Pawn(Unit):
 
     def path(self, board):
         [row, column] = super().location(self, board)
-        direction = "row - " if self.player.color == "white" else "row + "
+        direction = f"{row} - " if self.player.color == "white" else f"{row} + "
 
         positions = []
         try:

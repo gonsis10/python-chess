@@ -47,7 +47,7 @@ class Board:
 
         return frame
 
-    def piece(self, response, player):
+    def unit(self, response, player=None):
         x_order = {"a": 0, "b": 1, "c": 2, "d": 3,
                    "e": 4, "f": 5, "g": 6, "h": 7}
         y_order = {1: 7, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1, 8: 0}
@@ -56,27 +56,18 @@ class Board:
         try:
             column = x_order.get(x)
             row = y_order.get(y)
-            piece = self.board[row][column]
-            if piece.player.color == player.color:
-                return True, piece
+            unit = self.board[row][column]
+            if player != None:
+                if unit.player.color == player.color:
+                    return True, unit
+            else:
+                return True, unit
         finally:
             return False
 
-    # def piece_paths(self, piece):
-    #     [row, column] = np.where(self.board == piece)
-    #     row = int(row)
-    #     column = int(column)
+    def move(self, piece, position):
+        [row, column] = piece.super().location(piece, self.board)
+        [row, column] = piece.location(piece, self.board)
 
-    #     def pawn():
-    #         try:
-    #             if self.board[row][column]
-    #         except:
-    #             pass
+        if not isinstance(position, Unit):
 
-    #     paths = {Pawn: pawn, Rook: rook, Knight: knight,
-    #              Bishop: bishop, Queen: queen, King: king}
-
-    #     return paths.get(piece)()
-
-    def move_piece(self, piece):
-        self.board.remove(piece)

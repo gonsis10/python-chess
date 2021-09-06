@@ -18,13 +18,11 @@ class Game:
 
     def piece_selection(self, player):
         print(f"{self.board.display}\nSelect piece.")
-        [valid, piece] = self.board.piece(input(), player)
+        [valid, piece] = self.board.unit(input(), player)
         if valid:
             self.position_selection(piece)
         else:
             self.piece_selection(player)
-
-        return
 
     def position_selection(self, piece, player):
         piece_paths = piece.paths(self.board)
@@ -33,8 +31,11 @@ class Game:
         if response.lower() == "b":
             self.piece_selection(player)
             return
-        [valid, position] = self.board.piece(response)
-        if valid:
+        [valid, position] = self.board.unit(response)
+        if valid and position in piece_paths:
+            self.board.move(piece, position)
+        else:
+            self.position_selection(piece, player)
             
 
 
