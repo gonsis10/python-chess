@@ -1,5 +1,4 @@
-from abc import ABC, abstractmethod
-import numpy as numpy
+from abc import abstractmethod
 
 
 class Unit:
@@ -10,7 +9,7 @@ class Unit:
         return str(-1)
 
     @abstractmethod
-    def path(self, board):
+    def paths(self, board):
         pass
 
     @property

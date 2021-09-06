@@ -1,4 +1,3 @@
-from numpy import recarray
 from board import Board
 from player import Player
 from pieces import *
@@ -20,19 +19,20 @@ class Game:
         print(f"{self.board.display()}\nSelect piece.")
         [valid, piece] = self.board.unit(input(), player)
         if valid:
-            self.position_selection(piece)
+            self.position_selection(piece, player)
         else:
             self.piece_selection(player)
 
     def position_selection(self, piece, player):
         piece_paths = piece.paths(self.board)
+        print(piece_paths)
         print(f"{self.board.display(piece_paths)}\nSelect position.")
         response = input()
         if response.lower() == "b":
             self.piece_selection(player)
             return
         [valid, position] = self.board.unit(response)
-        if valid and position in piece_paths:
+        if valid and list(self.board.location(position)) in piece_paths:
             self.board.move(piece, position)
         else:
             self.position_selection(piece, player)
