@@ -12,7 +12,7 @@ class Pawn(Unit):
         return str(0)
 
     def path(self, board):
-        [row, column] = super().location(self, board)
+        [row, column] = board.location(self)
         direction = f"{row} - " if self.player.color == "white" else f"{row} + "
 
         positions = []
@@ -47,7 +47,7 @@ class Pawn(Unit):
 
 class Bishop(Unit):
     def __init__(self, player):
-        super.__init__(player)
+        super().__init__(player)
 
     def __str__(self):
         return str(1)
@@ -55,7 +55,7 @@ class Bishop(Unit):
 
 class Knight(Unit):
     def __init__(self, player):
-        super.__init__(player)
+        super().__init__(player)
 
     def __str__(self):
         return str(2)
@@ -63,7 +63,7 @@ class Knight(Unit):
 
 class Rook(Unit):
     def __init__(self, player):
-        super.__init__(player)
+        super().__init__(player)
 
     def __str__(self):
         return str(3)
@@ -71,7 +71,7 @@ class Rook(Unit):
 
 class Queen(Unit):
     def __init__(self, player):
-        super.__init__(player)
+        super().__init__(player)
 
     def __str__(self):
         return str(4)
@@ -79,7 +79,7 @@ class Queen(Unit):
 
 class King(Unit):
     def __init__(self, player):
-        super.__init__(player)
+        super().__init__(player)
 
     def __str__(self):
         return str(5)

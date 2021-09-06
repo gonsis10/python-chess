@@ -17,7 +17,7 @@ class Game:
             round += 1
 
     def piece_selection(self, player):
-        print(f"{self.board.display}\nSelect piece.")
+        print(f"{self.board.display()}\nSelect piece.")
         [valid, piece] = self.board.unit(input(), player)
         if valid:
             self.position_selection(piece)
@@ -36,7 +36,6 @@ class Game:
             self.board.move(piece, position)
         else:
             self.position_selection(piece, player)
-            
 
 
 if __name__ == "__main__":

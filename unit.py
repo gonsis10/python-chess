@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as numpy
 
 
-class Unit():
+class Unit:
     def __init__(self, player=None):
         self.player = player
 
@@ -16,9 +16,3 @@ class Unit():
     @property
     def moved(self):
         pass
-
-    def location(self, object, board):
-        [row, column] = numpy.where(board == object)
-        row = int(row)
-        column = int(column)
-        return row, column

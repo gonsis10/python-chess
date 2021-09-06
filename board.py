@@ -13,7 +13,7 @@ class Board:
     def display(self, piece_paths=None):
         string = ""
         for row in range(len(self.board)):
-            string += f"{row + 1} "
+            string += f"{8 - row} "
             for column in range(len(self.board[row])):
                 unit = self.board[row][column]
                 if piece_paths != None and [row, column] in piece_paths:
@@ -31,7 +31,7 @@ class Board:
     def __setup(self, players):
         frame = [[Unit() for column in range(self.COLUMN)]
                  for row in range(self.ROW)]
-        piece_orders = {"white": [0, 1], "black": [7, 6]}
+        piece_orders = {"black": [0, 1], "white": [7, 6]}
         for player in players:
             order = piece_orders.get(player.color)
             for row in order:
@@ -47,12 +47,16 @@ class Board:
 
         return frame
 
+    def location(self, piece):
+        [row, column] = numpy.where(self.board == piece)
+        return int(row), int(column)
+
     def unit(self, response, player=None):
         x_order = {"a": 0, "b": 1, "c": 2, "d": 3,
                    "e": 4, "f": 5, "g": 6, "h": 7}
-        y_order = {1: 7, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1, 8: 0}
+        y_order = {"1": 7, "2": 6, "3": 5, "4": 4,
+                   "5": 3, "6": 2, "7": 1, "8": 0}
         [x, y] = list(response)
-
         try:
             column = x_order.get(x)
             row = y_order.get(y)
@@ -63,11 +67,10 @@ class Board:
             else:
                 return True, unit
         finally:
-            return False
+            return False, None
 
     def move(self, piece, position):
-        [row, column] = piece.super().location(piece, self.board)
-        [row, column] = piece.location(piece, self.board)
-
-        if not isinstance(position, Unit):
-
+        [piece_row, piece_column] = self.location(piece)
+        [position_row, position_column] = self.location(position)
+        self.board[position_row][position_column] = piece
+        self.board[piece_row][piece_column] = Unit()
