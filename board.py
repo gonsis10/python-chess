@@ -25,6 +25,7 @@ class Board:
                                           ) == "-1" else f"{unit} "
             string += "\n"
         string += "  a b c d e f g h"
+        
         return string
 
     def __setup(self, players):
@@ -52,6 +53,7 @@ class Board:
             for column in range(len(self.board[row])):
                 if piece is self.board[row][column]:
                     return row, column
+
         return None, None
 
     def unit(self, response, player=None):
@@ -71,6 +73,7 @@ class Board:
                 return True, unit
         except:
             pass
+
         return False, None
 
     def move(self, piece, position):

@@ -41,6 +41,7 @@ class Pawn(Unit):
                     positions.append([FORWARD_1, column + 1])
             except:
                 pass
+
         return positions
 
 
@@ -50,6 +51,51 @@ class Bishop(Unit):
 
     def __str__(self):
         return str(1)
+
+    def paths(self, board):
+        [row, column] = board.location(self)
+        positions = []
+        try:
+            amount = 1
+            while True:
+                position = board.board[row + amount][column - amount]
+                if type(position) is Unit or position.player.color == self.player.color:
+                    positions.append(position)
+                amount += 1
+        except:
+            pass
+        
+        try:
+            amount = 1
+            while True:
+                position = board.board[row + amount][column + amount]
+                if type(position) is Unit or position.player.color == self.player.color:
+                    positions.append(position)
+                amount += 1
+        except:
+            pass
+
+        try:
+            amount = 1
+            while True:
+                position = board.board[row - amount][column - amount]
+                if type(position) is Unit or position.player.color == self.player.color:
+                    positions.append(position)
+                amount += 1
+        except:
+            pass
+
+        try:
+            amount = 1
+            while True:
+                position = board.board[row - amount][column + amount]
+                if type(position) is Unit or position.player.color == self.player.color:
+                    positions.append(position)
+                amount += 1
+        except:
+            pass
+
+        return positions
 
 
 class Knight(Unit):
