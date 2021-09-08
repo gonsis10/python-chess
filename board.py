@@ -25,7 +25,7 @@ class Board:
                                           ) == "-1" else f"{unit} "
             string += "\n"
         string += "  a b c d e f g h"
-        
+
         return string
 
     def __setup(self, players):
@@ -77,9 +77,10 @@ class Board:
         return False, None
 
     def move(self, piece, position):
-        if hasattr(piece, "moved"):
-            if not piece.moved:
-                piece.moved = True
+        try:
+            piece.moved = True
+        except:
+            pass
         [piece_row, piece_column] = self.location(piece)
         [position_row, position_column] = self.location(position)
         self.board[position_row][position_column] = piece
