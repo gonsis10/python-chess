@@ -299,8 +299,7 @@ class King(Unit):
             enemy_pieces = board.player_pieces["black" if self.player.color ==
                                                "white" else "white"]
             for enemy_piece in enemy_pieces:
-                positions = [
-                    position for position in positions if position not in enemy_piece.paths(board)]
+                positions = [position for position in positions if position not in enemy_piece.paths(board)]
 
         return positions
 

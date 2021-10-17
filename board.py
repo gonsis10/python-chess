@@ -1,6 +1,12 @@
 from unit import Unit
 from pieces import *
 
+class positiveIndexList(list):
+    def __getitem__(self, n):
+        if n < 0:
+            raise IndexError()
+        return list.__getitem__(self, n)
+
 
 class Board:
     COLUMN = 8
@@ -8,7 +14,7 @@ class Board:
 
     def __init__(self, players):
         self.player_pieces = {"white": [], "black": []}
-        self.board = self.s1(players)
+        self.board = positiveIndexList(self.s1(players))
 
     def display(self, piece_paths=None):
         string = ""
@@ -67,7 +73,7 @@ class Board:
         self.player_pieces[black.color].append(a)
         self.player_pieces[black.color].append(b)
         attack = Queen(white)
-        frame[4][4] = attack
+        frame[4][3] = attack
         self.player_pieces[white.color].extend([attack])
         king = King(white)
         frame[7][4] = king
@@ -124,7 +130,9 @@ class Board:
                         checked = unit.checked(self)
                         paths = unit.paths(self, True)
                         if checked and not paths:
-                            return "checkmate", "white" if player.color == "black" else "black"
+                            for piece in self.player_pieces[player.color]:
+                                    if type(piece) != King and all(coordinate in unit.paths(self) for coordinate in piece.paths(self)):
+                                        return "checkmate", "white" if player.color == "black" else "black"
 
                         remaining_pieces = sum(
                             [value for value in self.player_pieces.values()], [])

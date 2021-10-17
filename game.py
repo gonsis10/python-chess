@@ -14,8 +14,11 @@ class Game:
                 if self.check_game_over():
                     break
                 self.piece_selection(player)
-                # self.check_win(player)
-            round += 1
+                round += 1
+            else:
+                continue
+            
+            break
 
     def piece_selection(self, player):
         print(f"{self.board.display()}\nSelect piece.")
@@ -28,7 +31,7 @@ class Game:
     def position_selection(self, piece, player):
         piece_paths = piece.paths(self.board) if type(
             piece) != King else piece.paths(self.board, True)
-        # print(piece_paths)
+        print(piece_paths)
         print(f"{self.board.display(piece_paths)}\nSelect position.")
         response = input()
         if response.lower() == "b":
