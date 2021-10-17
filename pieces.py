@@ -7,11 +7,8 @@ class Pawn(Unit):
     def __init__(self, player):
         super().__init__(player)
 
-    def __str__(self):
-        return str(0)
-
     def paths(self, board):
-        [row, column] = board.location(self)
+        row, column = board.location(self)
         DIRECTION = f"{row} - " if self.player.color == "white" else f"{row} + "
         FORWARD_1 = eval(f"{DIRECTION} 1")
         FORWARD_2 = eval(f"{DIRECTION} 2")
@@ -51,11 +48,8 @@ class Bishop(Unit):
     def __init__(self, player):
         super().__init__(player)
 
-    def __str__(self):
-        return str(1)
-
     def paths(self, board):
-        [row, column] = board.location(self)
+        row, column = board.location(self)
         positions = []
         # Top left
         try:
@@ -125,11 +119,8 @@ class Knight(Unit):
     def __init__(self, player):
         super().__init__(player)
 
-    def __str__(self):
-        return str(2)
-
     def paths(self, board):
-        [row, column] = board.location(self)
+        row, column = board.location(self)
         positions = []
         try:
             position = board.board[row + 2][column - 1]
@@ -194,11 +185,8 @@ class Rook(Unit):
     def __init__(self, player):
         super().__init__(player)
 
-    def __str__(self):
-        return str(3)
-
     def paths(self, board):
-        [row, column] = board.location(self)
+        row, column = board.location(self)
         positions = []
         # Up
         try:
@@ -268,9 +256,6 @@ class Queen(Unit):
     def __init__(self, player):
         super().__init__(player)
 
-    def __str__(self):
-        return str(4)
-
     def paths(self, board):
         positions = []
         positions.extend(Rook.paths(self, board))
@@ -283,11 +268,8 @@ class King(Unit):
     def __init__(self, player):
         super().__init__(player)
 
-    def __str__(self):
-        return str(5)
-
-    def paths(self, board):
-        [row, column] = board.location(self)
+    def paths(self, board, check_once=False):
+        row, column = board.location(self)
         positions = []
         for direction in ["top", "bottom"]:
             DIRECTION = row + 1 if direction == "top" else row - 1
@@ -313,4 +295,22 @@ class King(Unit):
         except:
             pass
 
+        if check_once:
+            enemy_pieces = board.player_pieces["black" if self.player.color ==
+                                               "white" else "white"]
+            for enemy_piece in enemy_pieces:
+                positions = [
+                    position for position in positions if position not in enemy_piece.paths(board)]
+
         return positions
+
+    def checked(self, board):
+        enemy_pieces = board.player_pieces["black" if self.player.color ==
+                                           "white" else "white"]
+        for enemy_piece in enemy_pieces:
+            location = list(board.location(self))
+            paths = enemy_piece.paths(board)
+            if location in paths:
+                return True
+
+        return False
