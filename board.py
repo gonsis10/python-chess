@@ -1,6 +1,7 @@
 from unit import Unit
 from pieces import *
 
+
 class positiveIndexList(list):
     def __getitem__(self, n):
         if n < 0:
@@ -14,7 +15,8 @@ class Board:
 
     def __init__(self, players):
         self.player_pieces = {"white": [], "black": []}
-        self.board = positiveIndexList(self.s1(players))
+        self.repetitive_check = {"location": None, "occurrences": 0}
+        self.board = positiveIndexList(self.__setup(players))
 
     def display(self, piece_paths=None):
         string = ""
@@ -58,13 +60,13 @@ class Board:
                 frame[row] = pieces
         return frame
 
-    def s1(self, players):
+    def s_checkmate(self, players):
         white, black = players
         frame = [[Unit() for column in range(self.COLUMN)]
                  for row in range(self.ROW)]
         pieces = []
-        pieces.extend([Rook(black), Knight(black), Bishop(black), Queen(
-            black), King(black), Bishop(black), Knight(black), Rook(black)])
+        pieces.extend([Rook(black), Knight(black), Bishop(black), Pawn(
+            black), King(black), Pawn(black), Knight(black), Rook(black)])
         a, b = [Pawn(black), Pawn(black)]
         frame[1][3] = a
         frame[1][5] = b
@@ -78,6 +80,55 @@ class Board:
         king = King(white)
         frame[7][4] = king
         self.player_pieces[white.color].extend([king])
+        return frame
+
+    def s_stalemate_1(self, players):
+        white, black = players
+        frame = [[Unit() for column in range(self.COLUMN)]
+                 for row in range(self.ROW)]
+        pieces = [Bishop(black), King(black)]
+        self.player_pieces[black.color].extend(pieces)
+        a, b = pieces
+        frame[1][3] = a
+        frame[1][5] = b
+        king = King(white)
+        frame[7][4] = king
+        self.player_pieces[white.color].append(king)
+        return frame
+
+    def s_stalemate_2(self, players):
+        white, black = players
+        frame = [[Unit() for column in range(self.COLUMN)]
+                 for row in range(self.ROW)]
+        a = Queen(black)
+        d = King(black)
+        e = Pawn(black)
+        frame[0][5] = d
+        frame[6][5] = a
+        frame[1][2] = e
+        self.player_pieces[black.color].append(a)
+        self.player_pieces[black.color].append(d)
+        self.player_pieces[black.color].append(e)
+        b = King(white)
+        c = Pawn(white)
+        frame[3][2] = c
+        frame[7][7] = b
+        self.player_pieces[white.color].append(b)
+        self.player_pieces[white.color].append(c)
+        return frame
+
+    def s_stalemate_3(self, players):
+        white, black = players
+        frame = [[Unit() for column in range(self.COLUMN)]
+                 for row in range(self.ROW)]
+        pieces = [Bishop(black), King(black)]
+        self.player_pieces[black.color].extend(pieces)
+        a, b = pieces
+        frame[1][3] = a
+        frame[1][5] = b
+        king = King(white)
+        frame[7][4] = king
+        self.player_pieces[white.color].append(king)
         return frame
 
     def location(self, piece):
@@ -129,10 +180,14 @@ class Board:
                     if type(unit) is King and unit.player.color == player.color:
                         checked = unit.checked(self)
                         paths = unit.paths(self, True)
-                        if checked and not paths:
-                            for piece in self.player_pieces[player.color]:
+                        if not paths:
+                            if checked:
+                                for piece in self.player_pieces[player.color]:
                                     if type(piece) != King and all(coordinate in unit.paths(self) for coordinate in piece.paths(self)):
                                         return "checkmate", "white" if player.color == "black" else "black"
+                            else:
+                                if all(not piece.paths(self) for piece in filter(lambda piece: type(piece) != King, self.player_pieces[player.color])):
+                                    return "stalemate", None
 
                         remaining_pieces = sum(
                             [value for value in self.player_pieces.values()], [])
@@ -143,8 +198,5 @@ class Board:
                         elif len(remaining_pieces) == 2:
                             if all(type(piece) in [King] for piece in remaining_pieces):
                                 return "stalemate", None
-
-                        # if not unit.paths(self, True):
-                        #     return "stalemate", None
 
         return None, None

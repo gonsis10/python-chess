@@ -17,7 +17,7 @@ class Game:
                 round += 1
             else:
                 continue
-            
+
             break
 
     def piece_selection(self, player):

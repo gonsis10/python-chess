@@ -182,6 +182,8 @@ class Knight(Unit):
 
 
 class Rook(Unit):
+    moved = False
+
     def __init__(self, player):
         super().__init__(player)
 
@@ -265,12 +267,26 @@ class Queen(Unit):
 
 
 class King(Unit):
+    moved = False
+
     def __init__(self, player):
         super().__init__(player)
 
     def paths(self, board, check_once=False):
         row, column = board.location(self)
         positions = []
+        if not self.moved:
+            try:
+                for rook in filter(lambda piece: type(piece) is Rook, board.player_pieces[self.player.color]):
+                    if not rook.moved:
+                        _, rook_column = board.location(rook)
+                        step = 1 if column > rook_column else -1
+                        if all(type(board.board[row][space]) is Unit for space in range(rook_column + step, column, step)):
+                            positions.append(
+                                [row, column + (2 if step < 0 else - 2)])
+            except:
+                pass
+
         for direction in ["top", "bottom"]:
             DIRECTION = row + 1 if direction == "top" else row - 1
             for amount in range(-1, 2):
@@ -299,7 +315,8 @@ class King(Unit):
             enemy_pieces = board.player_pieces["black" if self.player.color ==
                                                "white" else "white"]
             for enemy_piece in enemy_pieces:
-                positions = [position for position in positions if position not in enemy_piece.paths(board)]
+                positions = [
+                    position for position in positions if position not in enemy_piece.paths(board)]
 
         return positions
 
